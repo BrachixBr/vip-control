@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>VIP CONTROL Client</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #1a1a1a;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            font-family: Arial, sans-serif;
+            overflow: hidden;
+        }
+        #flashContent {
+            width: 800px;
+            height: 600px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            background-color: #000;
+        }
+    </style>
+</head>
+<body>
+    <div id="flashContent">
+        <p style="color: #fff; text-align: center; padding-top: 250px;">Carregando VIP CONTROL Client...</p>
+    </div>
+
+    <!-- SWFObject Library para embutir o Flash Player -->
+    <script src="https://ajax.googleapis.com/ajax/libs/swfobject/2.2/swfobject.js"></script>
+
+    <script>
+        // Carrega o loader.swf (que irá buscar o tfm.swf de forma relativa no mesmo domínio)
+        const swfUrl = './loader.swf';
+        
+        const params = {
+            allowScriptAccess: 'always',
+            allowNetworking: 'all',
+            wmode: 'direct',
+            quality: 'high'
+        };
+        
+        const attributes = { 
+            id: 'ChargeurTransformice', 
+            name: 'ChargeurTransformice' 
+        };
+
+        if (typeof swfobject !== 'undefined') {
+            try {
+                // Incorpora o SWF na div #flashContent
+                swfobject.embedSWF(swfUrl, 'flashContent', '800', '600', '10.0.0', null, {}, params, attributes);
+            } catch (e) {
+                console.warn('Erro ao carregar com swfobject, usando fallback embed', e);
+                createFallbackEmbed(swfUrl);
+            }
+        } else {
+            createFallbackEmbed(swfUrl);
+        }
+
+        function createFallbackEmbed(url) {
+            const container = document.getElementById('flashContent');
+            container.innerHTML = '';
+
+            const obj = document.createElement('object');
+            obj.setAttribute('type', 'application/x-shockwave-flash');
+            obj.setAttribute('data', url);
+            obj.setAttribute('width', '800');
+            obj.setAttribute('height', '600');
+
+            const paramMovie = document.createElement('param');
+            paramMovie.setAttribute('name', 'movie');
+            paramMovie.setAttribute('value', url);
+            obj.appendChild(paramMovie);
+
+            const paramAllow = document.createElement('param');
+            paramAllow.setAttribute('name', 'allowScriptAccess');
+            paramAllow.setAttribute('value', 'always');
+            obj.appendChild(paramAllow);
+
+            const embed = document.createElement('embed');
+            embed.setAttribute('src', url);
+            embed.setAttribute('type', 'application/x-shockwave-flash');
+            embed.setAttribute('width', '800');
+            embed.setAttribute('height', '600');
+            embed.setAttribute('allowScriptAccess', 'always');
+
+            obj.appendChild(embed);
+            container.appendChild(obj);
+        }
+    </script>
+</body>
+</html>
